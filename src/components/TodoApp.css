@@ -1,0 +1,36 @@
+.todoapp-container{
+  max-width: 760px; 
+  margin: auto;
+}
+
+ul{
+  list-style: none; 
+  padding-left: 0
+}
+
+.todoapp{
+  display: flex; 
+  flex-direction: column;
+  align-items: center;
+}
+
+li.todo-item {
+  margin-bottom: 10px;
+  padding: 15px;
+  color: white;
+  border-radius: 10px;
+}
+.colorpick-btn{
+  /* background: red; 어려우니까 여러분 돈 받고 하는 겁니다  */
+  border: 0; 
+  width: 20px; 
+  height: 20px; 
+  border-radius: 30px
+}
+
+.todo-list-wrap{
+  width: 100%; 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center;
+}
