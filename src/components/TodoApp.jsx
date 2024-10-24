@@ -2,6 +2,10 @@ import { useCallback, useState } from 'react';
 import './TodoApp.css';
 
 const COLOR_PICK_LIST = ['white', 'red', 'yellow', 'pink', 'green', 'violet'];
+import TodoInput from './TodoInput';
+import Colorbar from './Colorbar';
+import TodoItem from './TodoItem';
+import TodoList from './TodoList';
 
 export default function TodoApp({}) {
   const [todoInput, setTodoInput] = useState('');
@@ -31,38 +35,27 @@ export default function TodoApp({}) {
           <div>
             <h1>Todo APP</h1>
           </div>
-          <div style={{ display: 'flex' }}>
-            <input
-              type="text"
-              style={{ flexGrow: 1, backgroundColor: pickedColor }}
-              value={todoInput}
-              onChange={(e) => {
-                setTodoInput(e.target.value);
-              }}
-            />
-            <button onClick={addTodo}>입력</button>
-          </div>
+          {/* 
+          - 부모->자식 데이터 전달:props
+          - 자식->부모 데이터 전달: X(불가)
+          만약 부모의 state를 자식컴포넌트가 변경시키고자 하면,
+           --> 부모의 state를 변경하는 함수를 자식에게 전달해주자.
+           */}
+          <TodoInput
+            pickedColor={pickedColor}
+            todoInput={todoInput}
+            setTodoInput={setTodoInput}
+            addTodo={addTodo}
+          />
         </div>
 
         <div style={{ marginTop: 30, width: '100%' }}>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-evenly',
-              maxWidth: 200,
-              margin: 'auto',
+          <Colorbar
+            colorList={COLOR_PICK_LIST}
+            onClickColor={(color) => {
+              setPickedColor(color);
             }}
-          >
-            {COLOR_PICK_LIST.map((color, idx) => (
-              <button
-                className="colorpick-btn"
-                style={{ backgroundColor: color }}
-                onClick={() => {
-                  setPickedColor(color);
-                }}
-              ></button>
-            ))}
-          </div>
+          />
         </div>
 
         <div className="todo-list-wrap">
@@ -71,15 +64,7 @@ export default function TodoApp({}) {
           </div>
 
           <div style={{ width: '100%' }}>
-            <ul>
-              {todoArray.map((todo) => {
-                return (
-                  <li className="todo-item" style={{ backgroundColor: todo.color }}>
-                    {todo.text}
-                  </li>
-                );
-              })}
-            </ul>
+            <TodoList items={todoArray} />
           </div>
         </div>
       </div>
