@@ -1,6 +1,14 @@
-.todoapp-container{
+body{
+  background-color: #0046ff;
+  margin:0;
+  min-height: 100vh;
+  padding:15px
+}
+
+.todoapp-wrap{
   max-width: 760px; 
   margin: auto;
+
 }
 
 ul{
@@ -17,11 +25,11 @@ ul{
 li.todo-item {
   margin-bottom: 10px;
   padding: 15px;
-  color: white;
+  /* color: white; */
   border-radius: 10px;
 }
 .colorpick-btn{
-  /* background: red; 어려우니까 여러분 돈 받고 하는 겁니다  */
+  /* background: red; */
   border: 0; 
   width: 20px; 
   height: 20px; 
