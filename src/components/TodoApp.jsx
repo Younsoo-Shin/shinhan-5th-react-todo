@@ -8,15 +8,18 @@ import Colorbar from './Colorbar';
 import TodoItem from './TodoItem';
 import TodoList from './TodoList';
 import { getChoseong } from 'es-hangul';
+import { v4 as uuidv4 } from 'uuid';
 
 export default function TodoApp({}) {
   const [todoInput, setTodoInput] = useState('');
   const [todoArray, setTodoArray] = useState([
     {
+      id: uuidv4(),
       text: 'initialTodo',
       color: 'green',
     },
     {
+      id: uuidv4(),
       text: '신윤수',
       color: 'green',
       chosung: 'ㅅㅇㅅ',
@@ -38,6 +41,9 @@ export default function TodoApp({}) {
     const newTodoArray = [
       ...todoArray,
       {
+        // id: ,
+        // uuid: universally unique id
+        id: uuidv4(),
         text: todoInput,
         color: pickedColor,
       },
@@ -69,10 +75,11 @@ export default function TodoApp({}) {
   const removeItem = (item) => {
     // item을 인자로 받아서, state를 업데이트
     const newTodoArray = todoArray.filter((todo) => {
-      return item.text !== todo.text;
+      return item.id !== todo.id;
     });
 
     setTodoArray(newTodoArray);
+    localStorage.setItem(STORAGE_TODO_KEY, JSON.stringify(newTodoArrays));
   };
 
   return (
