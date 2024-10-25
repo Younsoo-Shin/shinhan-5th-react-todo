@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import './TodoApp.css';
 
 const COLOR_PICK_LIST = ['white', 'red', 'yellow', 'pink', 'green', 'violet'];
+const STORAGE_TODO_KEY = 'todoarr';
 import TodoInput from './TodoInput';
 import Colorbar from './Colorbar';
 import TodoItem from './TodoItem';
@@ -26,14 +27,27 @@ export default function TodoApp({}) {
   const [searchInput, setSeartchInput] = useState('');
   const [searchResult, setSearchResult] = useState([]);
 
+  useEffect(() => {
+    const loadedTodo = localStorage.getItem(STORAGE_TODO_KEY);
+    if (loadedTodo) {
+      setTodoArray(JSON.parse(loadedTodo));
+    }
+  }, []);
+
   const addTodo = useCallback(() => {
-    setTodoArray((prevTodoArr) => [
-      ...prevTodoArr,
+    const newTodoArray = [
+      ...todoArray,
       {
         text: todoInput,
         color: pickedColor,
       },
-    ]);
+    ];
+    setTodoArray(newTodoArray);
+    // string만 저장 가능
+    // localStorage.setItem(key, value)
+    // localStorage.getItem(key);
+    localStorage.setItem(STORAGE_TODO_KEY, JSON.stringify(newTodoArray));
+
     setTodoInput('');
   }, [todoInput, pickedColor]);
 
