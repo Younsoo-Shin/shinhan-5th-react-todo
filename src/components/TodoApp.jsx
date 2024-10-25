@@ -66,6 +66,15 @@ export default function TodoApp({}) {
     return searchInput ? searchResult : todoArray;
   }, [searchResult, todoArray, searchInput]);
 
+  const removeItem = (item) => {
+    // item을 인자로 받아서, state를 업데이트
+    const newTodoArray = todoArray.filter((todo) => {
+      return item.text !== todo.text;
+    });
+
+    setTodoArray(newTodoArray);
+  };
+
   return (
     <div className="todoapp-wrap">
       <div className="todoapp">
@@ -117,7 +126,7 @@ export default function TodoApp({}) {
 
           <div style={{ width: '100%' }}>
             {/* <TodoList items={todoArray} /> */}
-            <TodoList items={renderedList} />
+            <TodoList items={renderedList} onDeleteFn={removeItem} />
           </div>
         </div>
       </div>
