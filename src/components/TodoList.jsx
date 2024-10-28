@@ -1,10 +1,13 @@
 import TodoItem from './TodoItem';
+import useTodo from '../hooks/useTodo';
 
-export default function TodoList({ items }) {
+export default function TodoList() {
+  const { todoList } = useTodo();
+
   return (
     <ul>
-      {items.map((item) => {
-        return <TodoItem bgColor={item.color}>{item.text}</TodoItem>;
+      {todoList.map((todo) => {
+        return <TodoItem todo={todo}></TodoItem>;
       })}
     </ul>
   );

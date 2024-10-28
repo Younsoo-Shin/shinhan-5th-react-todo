@@ -8,25 +8,7 @@ import TodoItem from './TodoItem';
 import TodoList from './TodoList';
 
 export default function TodoApp({}) {
-  const [todoInput, setTodoInput] = useState('');
-  const [todoArray, setTodoArray] = useState([
-    {
-      text: 'initialTodo',
-      color: 'green',
-    },
-  ]);
   const [pickedColor, setPickedColor] = useState(COLOR_PICK_LIST[0]);
-
-  const addTodo = useCallback(() => {
-    setTodoArray((prevTodoArr) => [
-      ...prevTodoArr,
-      {
-        text: todoInput,
-        color: pickedColor,
-      },
-    ]);
-    setTodoInput('');
-  }, [todoInput, pickedColor]);
 
   return (
     <div className="todoapp-wrap">
@@ -41,12 +23,7 @@ export default function TodoApp({}) {
           만약 부모의 state를 자식컴포넌트가 변경시키고자 하면,
            --> 부모의 state를 변경하는 함수를 자식에게 전달해주자.
            */}
-          <TodoInput
-            pickedColor={pickedColor}
-            todoInput={todoInput}
-            setTodoInput={setTodoInput}
-            addTodo={addTodo}
-          />
+          <TodoInput pickedColor={pickedColor} />
         </div>
 
         <div style={{ marginTop: 30, width: '100%' }}>
@@ -64,7 +41,7 @@ export default function TodoApp({}) {
           </div>
 
           <div style={{ width: '100%' }}>
-            <TodoList items={todoArray} />
+            <TodoList />
           </div>
         </div>
       </div>

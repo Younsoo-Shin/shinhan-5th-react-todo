@@ -4,10 +4,14 @@ import viteLogo from '/vite.svg';
 import './App.css';
 import TodoApp from './components/TodoApp';
 
+import TodoContextProvider from './contexts/todoContext';
+
 function App() {
   return (
     <>
-      <TodoApp />
+      <TodoContextProvider>
+        <TodoApp />
+      </TodoContextProvider>
     </>
   );
 }

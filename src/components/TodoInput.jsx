@@ -1,4 +1,9 @@
-export default function TodoInput({ pickedColor, todoInput, setTodoInput, addTodo }) {
+import { useState } from 'react';
+import useTodo from '../hooks/useTodo';
+
+export default function TodoInput({ pickedColor }) {
+  const [todoInput, setTodoInput] = useState('');
+  const { addTodo } = useTodo();
   return (
     <div style={{ display: 'flex' }}>
       <input
@@ -12,7 +17,17 @@ export default function TodoInput({ pickedColor, todoInput, setTodoInput, addTod
           setTodoInput(e.target.value);
         }}
       />
-      <button onClick={addTodo}>입력</button>
+      <button
+        onClick={() => {
+          addTodo({
+            text: todoInput,
+            color: pickedColor,
+          });
+          setTodoInput('');
+        }}
+      >
+        입력
+      </button>
     </div>
   );
 }
