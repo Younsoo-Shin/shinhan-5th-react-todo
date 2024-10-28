@@ -3,9 +3,10 @@ import TodoItem from './TodoItem';
 /**
  *
  * @param {onDeleteFn} listItem 삭제 (item)=> void
+ * @param {onUpdateFn} listItem 수정 (item, newItem)=> void
  * @returns
  */
-export default function TodoList({ items, onDeleteFn }) {
+export default function TodoList({ items, onDeleteFn, onUpdateFn }) {
   return (
     <ul>
       {/* 
@@ -25,6 +26,11 @@ export default function TodoList({ items, onDeleteFn }) {
             bgColor={item.color}
             onDelete={() => {
               onDeleteFn(item);
+            }}
+            onUpdate={({ text }) => {
+              onUpdateFn(item, {
+                text: text,
+              });
             }}
           >
             {item.text}

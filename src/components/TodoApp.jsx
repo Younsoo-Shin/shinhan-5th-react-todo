@@ -10,6 +10,27 @@ import TodoList from './TodoList';
 import { getChoseong } from 'es-hangul';
 import { v4 as uuidv4 } from 'uuid';
 
+/**
+ * 1. TodoItem에 수정버튼을 만든다.
+ *    -> button태그 이용해서 만든다.
+ * 2. 수정버튼을 클릭하면, TodoItem에 Rendering되는 Todo 컨텐츠를 감싸는 태그를 input으로 보이게 한다.
+ *    -> 수정버튼에 onClick 이벤트 핸들러 연결.
+ *        -> 이벤트 내용은. 현재 수정버튼이 클릭되었는지에 대한 state를 변경하는 함수 호출. (state이름: isEditMode)
+ *    -> isEditMode가 true -> 컨텐츠를 input태그로 감싸서 // isEditMode: false -> 컨텐츠를 div태그로
+ * 3. input의 기본 value값은 기존 todo.text로 한다.
+ *    -> 해당 input내용을 기존에 존재하던 todo.text로 하되, state를 하나 부여하여 관리필요. (사용자입력을 저장할 state)
+ * 4. input이 변경되고, 다시 수정버튼을 누르면 해당 내용으로 저장된다.
+ *    -> 수정버튼에 onClick 이벤트 핸들러 내용 수정 --> isEditMode가 true일 경우엔 저장. 
+ *    -> isEditMode가 false일 경우엔 input태그로 변경
+ =>필요 리소스
+ 1. isEditMode라는 state
+ 2. onClickEditBtn이라는 EventHandler 필요.
+      - 1. isEditMode 변경.
+      - 2. updateTodo 호출
+ 3. editInput: 사용자 입력을 저장할 State
+ 4. updateTodo라는 함수 필요.
+ */
+
 export default function TodoApp({}) {
   const [todoInput, setTodoInput] = useState('');
   const [todoArray, setTodoArray] = useState([
@@ -79,7 +100,21 @@ export default function TodoApp({}) {
     });
 
     setTodoArray(newTodoArray);
-    localStorage.setItem(STORAGE_TODO_KEY, JSON.stringify(newTodoArrays));
+    localStorage.setItem(STORAGE_TODO_KEY, JSON.stringify(newTodoArray));
+  };
+
+  const onUpdateFn = (item, newItem) => {
+    const newTodoArray = todoArray.map((todo) => {
+      if (todo.id === item.id) {
+        return {
+          ...item,
+          ...newItem,
+        };
+      }
+      return todo;
+    });
+    setTodoArray(newTodoArray);
+    localStorage.setItem(STORAGE_TODO_KEY, JSON.stringify(newTodoArray));
   };
 
   return (
@@ -133,7 +168,11 @@ export default function TodoApp({}) {
 
           <div style={{ width: '100%' }}>
             {/* <TodoList items={todoArray} /> */}
-            <TodoList items={renderedList} onDeleteFn={removeItem} />
+            <TodoList
+              items={renderedList}
+              onDeleteFn={removeItem}
+              onUpdateFn={onUpdateFn}
+            />
           </div>
         </div>
       </div>
