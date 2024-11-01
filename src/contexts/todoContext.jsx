@@ -1,5 +1,7 @@
 import { createContext, useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import { fetchTodoList } from '../services/todoService';
+
 export const TodoContext = createContext(null);
 
 export default function TodoContextProvider({ children }) {
@@ -22,11 +24,18 @@ export default function TodoContextProvider({ children }) {
     setTodoList(newTodoList);
     localStorage.setItem('todoarr', JSON.stringify(newTodoList));
   };
+
   useEffect(() => {
-    const data = localStorage.getItem('todoarr');
-    if (data) {
-      setTodoList(JSON.parse(data));
-    }
+    fetchTodoList().then((data) => {
+      if (data) {
+        setTodoList(data);
+      }
+    });
+
+    // const data = localStorage.getItem('todoarr');
+    // if (data) {
+    //   setTodoList(data);
+    // }
   }, []);
 
   const removeTodo = (todoId) => {
