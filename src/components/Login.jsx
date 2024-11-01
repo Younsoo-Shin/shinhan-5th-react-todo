@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
+import { serverLogin } from '../services/authService';
 
 export default function Login() {
   const [show, setShow] = useState(false);
@@ -13,6 +14,10 @@ export default function Login() {
     email: '',
     password: '',
   });
+
+  const submitLogin = useCallback(() => {
+    serverLogin(userInput.email, userInput.password);
+  }, [userInput]);
 
   return (
     <>
@@ -32,6 +37,13 @@ export default function Login() {
                 type="email"
                 placeholder="name@example.com"
                 autoFocus
+                onChange={(e) => {
+                  setUserInput((prev) => ({
+                    ...prev,
+                    email: e.target.value,
+                  }));
+                }}
+                value={userInput.email}
               />
             </Form.Group>
             <Form.Group
@@ -39,7 +51,16 @@ export default function Login() {
               controlId="exampleForm.ControlTextarea1"
             >
               <Form.Label>Password</Form.Label>
-              <Form.Control type="password" rows={3} />
+              <Form.Control
+                type="password"
+                value={userInput.password}
+                onChange={(e) => {
+                  setUserInput((prev) => ({
+                    ...prev,
+                    password: e.target.value,
+                  }));
+                }}
+              />
             </Form.Group>
           </Form>
         </Modal.Body>
@@ -47,8 +68,14 @@ export default function Login() {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Save Changes
+          <Button
+            variant="primary"
+            onClick={(e) => {
+              submitLogin();
+            }}
+          >
+            {/* Save Changes */}
+            로그인
           </Button>
         </Modal.Footer>
       </Modal>
