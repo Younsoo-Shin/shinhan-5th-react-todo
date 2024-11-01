@@ -16,5 +16,27 @@ const fetchTodoList = async () => {
 };
 
 // Todo를 등록하는 함수
+const addTodo = async ({ text, color }) => {
+  const url = `${baseUrl}/todos`;
+  let authToken = sessionStorage.getItem('authToken');
+  if (authToken) {
+    authToken = JSON.parse(authToken);
+  }
+  try {
+    const resp = await axios.post(
+      url,
+      { text, color },
+      {
+        headers: {
+          'Content-type': 'application/json',
+          Authorization: `Bearer ${authToken.token}`,
+        },
+      }
+    );
+    return resp.data;
+  } catch (err) {
+    console.error(err);
+  }
+};
 
-export { fetchTodoList };
+export { fetchTodoList, addTodo };

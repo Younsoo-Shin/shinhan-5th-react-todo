@@ -1,6 +1,9 @@
 import { createContext, useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { fetchTodoList } from '../services/todoService';
+import {
+  fetchTodoList,
+  addTodo as addTodoServer,
+} from '../services/todoService';
 
 export const TodoContext = createContext(null);
 
@@ -13,16 +16,22 @@ export default function TodoContextProvider({ children }) {
   ]);
 
   const addTodo = (todo) => {
-    const newTodoList = [
-      ...todoList,
-      {
-        id: uuidv4(),
-        text: todo.text,
-        color: todo.color,
-      },
-    ];
-    setTodoList(newTodoList);
-    localStorage.setItem('todoarr', JSON.stringify(newTodoList));
+    addTodoServer({
+      text: todo.text,
+      color: todo.color,
+    }).then((data) => {
+      setTodoList((prev) => [...prev, data]);
+    });
+    // const newTodoList = [
+    //   ...todoList,
+    //   {
+    //     id: uuidv4(),
+    //     text: todo.text,
+    //     color: todo.color,
+    //   },
+    // ];
+    // setTodoList(newTodoList);
+    // localStorage.setItem('todoarr', JSON.stringify(newTodoList));
   };
 
   useEffect(() => {
