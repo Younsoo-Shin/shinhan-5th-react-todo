@@ -7,6 +7,7 @@ const fetchTodoList = async () => {
   try {
     const resp = await axios.get(url);
     const data = resp.data;
+
     return data;
   } catch (err) {
     console.error(err);

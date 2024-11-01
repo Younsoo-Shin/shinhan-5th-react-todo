@@ -10,6 +10,7 @@ const serverLogin = async (email, password) => {
       { email, password },
       { headers: { 'Content-type': 'application/json' } }
     );
+    sessionStorage.setItem('authToken', JSON.stringify(resp.data));
 
     return resp.data;
   } catch (err) {

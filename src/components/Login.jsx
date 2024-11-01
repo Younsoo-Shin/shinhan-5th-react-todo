@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
@@ -10,20 +10,35 @@ export default function Login() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const [authToken, setAuthToken] = useState({});
+
   const [userInput, setUserInput] = useState({
     email: '',
     password: '',
   });
+  useEffect(() => {
+    const data = sessionStorage.getItem('authToken');
+    if (data) {
+      setAuthToken(JSON.parse(data));
+    }
+  }, []);
 
   const submitLogin = useCallback(() => {
-    serverLogin(userInput.email, userInput.password);
+    serverLogin(userInput.email, userInput.password).then((data) => {
+      setAuthToken(data);
+      handleClose();
+    });
   }, [userInput]);
 
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
-        Launch demo modal
-      </Button>
+      {authToken.email ? (
+        authToken.email
+      ) : (
+        <Button variant="primary" onClick={handleShow}>
+          로그인
+        </Button>
+      )}
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
